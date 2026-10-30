@@ -1,17 +1,10 @@
-import 'package:sqflite/sqflite.dart';
-import 'database_helper.dart';
-import '../models/produit.dart';
+Future<List<Produit>> lireProduits() async {
+final db = await DatabaseHelper().database;
 
-class ProduitDao {
-
-Future<int> insertProduit(Produit produit) async {
-final db = await DatabaseHelper.instance.database;
-
-return await db.insert(
-  'produits',
-  produit.toMap(),
-  conflictAlgorithm: ConflictAlgorithm.replace,
+final lignes = await db.query(
+'produits',
+orderBy: 'nom ASC',
 );
 
-}
+return lignes.map((ligne) => Produit.fromMap(ligne)).toList();
 }

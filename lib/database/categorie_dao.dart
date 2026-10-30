@@ -1,8 +1,10 @@
-Future<int> insertProduit(Produit produit) async {
-  final db = await DatabaseHelper.instance.database;
+Future<List<Categorie>> lireCategories() async {
+final db = await DatabaseHelper().database;
 
-  return await db.insert(
-    'produits',
-    produit.toMap(),
-  );
+final lignes = await db.query(
+'categories',
+orderBy: 'nom ASC',
+);
+
+return lignes.map((ligne) => Categorie.fromMap(ligne)).toList();
 }
