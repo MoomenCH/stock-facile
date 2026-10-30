@@ -1,43 +1,31 @@
-import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'database/database_helper.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  // Windows / Linux : SQLite passe par FFI
-  if (!kIsWeb && (Platform.isWindows || Platform.isLinux)) {
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
-  }
-  runApp(const StockFacileApp());
+void main() async {
+WidgetsFlutterBinding.ensureInitialized();
+
+final db = await DatabaseHelper.instance.database;
+
+print("Base de données créée avec succès !");
+
+runApp(const MyApp());
 }
 
-class StockFacileApp extends StatelessWidget {
-  const StockFacileApp({super.key});
+class MyApp extends StatelessWidget {
+const MyApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'StockFacile',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.teal,
-      ),
-      home: const AccueilPage(),
-    );
-  }
+@override
+Widget build(BuildContext context) {
+return const MaterialApp(
+debugShowCheckedModeBanner: false,
+home: Scaffold(
+body: Center(
+child: Text(
+"Connexion SQLite réussie !",
+style: TextStyle(fontSize: 22),
+),
+),
+),
+);
 }
-
-class AccueilPage extends StatelessWidget {
-  const AccueilPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('StockFacile')),
-      body: const Center(child: Text('Bienvenue dans StockFacile')),
-    );
-  }
 }
