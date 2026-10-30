@@ -1,10 +1,9 @@
-Future<List<Categorie>> lireCategories() async {
-final db = await DatabaseHelper().database;
+Future<int> deleteProduit(int id) async {
+final db = await DatabaseHelper.instance.database;
 
-final lignes = await db.query(
-'categories',
-orderBy: 'nom ASC',
+return await db.delete(
+'produits',
+where: 'id = ?',
+whereArgs: [id],
 );
-
-return lignes.map((ligne) => Categorie.fromMap(ligne)).toList();
 }
