@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
-import 'database/database_helper.dart';
+import 'database/produit_dao.dart';
+import 'models/produit.dart';
 
 void main() async {
 WidgetsFlutterBinding.ensureInitialized();
 
-final db = await DatabaseHelper.instance.database;
+final dao = ProduitDao();
 
-print("Base de données créée avec succès !");
+final produit = Produit(
+nom: 'Coca Cola',
+description: 'Boisson gazeuse',
+prix: 2.500,
+quantite: 50,
+);
+
+final id = await dao.insertProduit(produit);
+
+print('Produit ajouté avec succès !');
+print('ID du produit : $id');
 
 runApp(const MyApp());
 }
@@ -21,7 +32,7 @@ debugShowCheckedModeBanner: false,
 home: Scaffold(
 body: Center(
 child: Text(
-"Connexion SQLite réussie !",
+'Insertion SQLite réussie !',
 style: TextStyle(fontSize: 22),
 ),
 ),
